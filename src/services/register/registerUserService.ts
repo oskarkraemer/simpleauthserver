@@ -12,9 +12,7 @@ export async function handleRegister(registerUserDto: RegisterUserDto): Promise<
         passwordHash: ""
     }
 
-    bcrypt.hash(registerUserDto.password, SALT_ROUNDS, function(err, hash) {
-        newUserData.passwordHash = hash;
-    });
+    newUserData.passwordHash = await bcrypt.hash(registerUserDto.password, SALT_ROUNDS);
 
     return await prisma.user.create({
         data: newUserData
