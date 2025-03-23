@@ -4,7 +4,7 @@ import MessageResponse from '../interfaces/responses/messageResponse';
 import { RegisterUserDto } from '../dtos/request/registerUserDto';
 import { handleRegister } from '../services/register/registerUserService';
 import { validateRequest } from '../middlewares';
-import { User } from '@prisma/client';
+import { handleLogin } from '../services/login/loginUserService';
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.get<{}, MessageResponse>('/health', (req, res) => {
 });
 
 router.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
-  const newUser = await handleRegister(req.body) as User;
+  const newUser = await handleRegister(req.body);
   newUser.passwordHash = "";
 
   res.json({
@@ -24,13 +24,12 @@ router.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
   });
 });
 
-router.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
-  const newUser = await handleRegister(req.body) as User;
-  newUser.passwordHash = "";
+router.post("/login", validateRequest(RegisterUserDto), async (req, res) => {
+  const session = await handleLogin(req.body);
 
   res.json({
-    message: 'User registered successfully',
-    user: newUser
+    message: 'User logged in successfully',
+    session
   });
 });
 
