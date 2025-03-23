@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import { LoginUserDto } from "../../dtos/request/loginUserDto";
 
 const prisma = new PrismaClient();
-const SALT_ROUNDS = 10;
 
 export async function handleLogin(loginUserDto: LoginUserDto): Promise<Session> {
     const foundUser = await prisma.user.findUniqueOrThrow({ 
