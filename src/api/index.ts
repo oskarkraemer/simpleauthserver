@@ -1,7 +1,6 @@
 import express from 'express';
 
 import MessageResponse from '../interfaces/responses/messageResponse';
-import emojis from './emojis';
 import { RegisterUserDto } from '../dtos/request/registerUserDto';
 import { handleRegister } from '../services/register/registerUserService';
 import { validateRequest } from '../middlewares';
@@ -25,6 +24,14 @@ router.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
   });
 });
 
-router.use('/emojis', emojis);
+router.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
+  const newUser = await handleRegister(req.body) as User;
+  newUser.passwordHash = "";
+
+  res.json({
+    message: 'User registered successfully',
+    user: newUser
+  });
+});
 
 export default router;
