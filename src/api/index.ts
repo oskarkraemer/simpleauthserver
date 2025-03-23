@@ -5,6 +5,7 @@ import emojis from './emojis';
 import { RegisterUserDto } from '../dtos/request/registerUserDto';
 import { handleRegister } from '../services/register/registerUserService';
 import { validateRequest } from '../middlewares';
+import { User } from '@prisma/client';
 
 const router = express.Router();
 
@@ -15,10 +16,11 @@ router.get<{}, MessageResponse>('/health', (req, res) => {
 });
 
 router.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
-  const newUser = await handleRegister(req.body);
+  const newUser = await handleRegister(req.body) as User;
+  newUser.passwordHash = "";
 
   res.json({
-    message: "",
+    message: 'User registered successfully',
     user: newUser
   });
 });
