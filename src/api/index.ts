@@ -18,6 +18,7 @@ router.get<{}, MessageResponse>('/testuser', async (req, res, next) => {
     data: {
       email: "test@test2.de",
       name: "Oskar",
+      passwordHash: "test",
     },
   });
   res.json({

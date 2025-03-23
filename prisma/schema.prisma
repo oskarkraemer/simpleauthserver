@@ -14,7 +14,23 @@ datasource db {
 }
 
 model User {
-  id  Int @id @default(autoincrement())
-  email String @unique
-  name String?
+  id            Int @id @default(autoincrement())
+  email         String @unique
+  name          String?
+  passwordHash  String
+  activated     Boolean @default(false) //is email confirmed
+  disabled      Boolean @default(false)
+  roles         Role[]
+}
+
+model Role {
+  id            Int @id @default(autoincrement())
+  name          String
+  permissions   Permission[]
+  user          User[]
+}
+
+model Permission {
+  id            String @id
+  roles         Role[]
 }
