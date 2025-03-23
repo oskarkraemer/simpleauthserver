@@ -1,11 +1,12 @@
 import express from 'express';
 
-import MessageResponse from '../interfaces/MessageResponse';
+import MessageResponse from '../interfaces/responses/messageResponse';
 import emojis from './emojis';
-import { PrismaClient } from '@prisma/client';
+import { RegisterUserDto } from '../dtos/request/registerUserDto';
+import { handleRegister } from '../services/register/registerUserService';
+import { validateRequest } from '../middlewares';
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 router.get<{}, MessageResponse>('/health', (req, res) => {
   res.json({
@@ -13,23 +14,12 @@ router.get<{}, MessageResponse>('/health', (req, res) => {
   });
 });
 
-router.get<{}, MessageResponse>('/testuser', async (req, res, next) => {
-  const newUser = await prisma.user.create({
-    data: {
-      email: "test@test2.de",
-      name: "Oskar",
-      passwordHash: "test",
-    },
-  });
-  res.json({
-    message: JSON.stringify(newUser)
-  });
-});
+router.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
+  const newUser = await handleRegister(req.body);
 
-router.get<{}, MessageResponse>('/getusers', async (req, res, next) => {
-  const users = await prisma.user.findMany();
   res.json({
-    message: JSON.stringify(users)
+    message: "",
+    user: newUser
   });
 });
 

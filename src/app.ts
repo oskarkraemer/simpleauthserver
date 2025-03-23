@@ -6,7 +6,7 @@ import fs from 'fs';
 
 import * as middlewares from './middlewares';
 import api from './api';
-import MessageResponse from './interfaces/MessageResponse';
+import MessageResponse from './interfaces/responses/messageResponse';
 
 require('dotenv').config();
 
