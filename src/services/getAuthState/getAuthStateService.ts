@@ -3,7 +3,7 @@ import { PrismaClient, Session } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function handleGetAuthState(sessionId: string): Promise<Session | null> {
-    return await prisma.session.findUnique({ 
+    const session = await prisma.session.findUnique({ 
         where: {
             id: sessionId
         },
@@ -11,4 +11,19 @@ export async function handleGetAuthState(sessionId: string): Promise<Session | n
             user: true
         }
     });
+    if(!session) {
+        return null;
+    }
+
+    //Remove expired session
+    if(session.expires <= new Date()) {
+        await prisma.session.delete({
+            where: {
+                id: sessionId
+            }
+        });
+        return null;
+    }
+
+    return session;
 }
