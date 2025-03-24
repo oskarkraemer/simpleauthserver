@@ -5,6 +5,7 @@ import { RegisterUserDto } from '../dtos/request/registerUserDto';
 import { handleRegister } from '../services/register/registerUserService';
 import { validateRequest } from '../middlewares';
 import { handleLogin } from '../services/login/loginUserService';
+import { handleGetAuthState } from '../services/getAuthState/getAuthStateService';
 
 const router = express.Router();
 
@@ -32,5 +33,19 @@ router.post("/login", validateRequest(RegisterUserDto), async (req, res) => {
     session
   });
 });
+
+router.get("/get_auth_state/:sessionId", async (req, res, next) => {
+  const sessionId = req.params.sessionId;
+  const session = await handleGetAuthState(sessionId);
+  if(session == null) {
+    return next(new Error("Invalid session id."));
+  }
+
+  res.json({
+    message: 'Sucessfully fetched auth state.',
+    session
+  });
+});
+
 
 export default router;
