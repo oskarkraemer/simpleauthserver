@@ -9,12 +9,6 @@ import { handleGetAuthState } from '../services/getAuthState/getAuthStateService
 
 const authRouter = express.Router();
 
-authRouter.get<{}, MessageResponse>('/health', (req, res) => {
-  res.json({
-    message: 'simpleauthserver is healthy - 200',
-  });
-});
-
 authRouter.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
   const newUser = await handleRegister(req.body);
   newUser.passwordHash = "";
