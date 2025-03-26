@@ -1,4 +1,5 @@
 import request from 'supertest';
+import { describe, it } from '@jest/globals';
 
 import app from '../src/app';
 
@@ -19,7 +20,7 @@ describe('GET /', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .expect(200, {
-        message: '🦄🌈✨👋🌎🌍🌏✨🌈🦄',
+        message: 'Running simpleauthserver ' + process.env.npm_package_version,
       }, done);
   });
 });
