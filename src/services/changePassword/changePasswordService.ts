@@ -25,18 +25,28 @@ export async function handleChangePassword(changePasswordDto: ChangePasswordDto,
 
     const userOfSession = users[0];
 
-     //2. Check if old password is correct
-    if(!comparePasswords(userOfSession.passwordHash, changePasswordDto.oldPassword)){
+    //2. Check if old password is correct
+    const passwordsMatched = await comparePasswords(changePasswordDto.oldPassword, userOfSession.passwordHash);
+    if(!passwordsMatched){
         throw new Error("Old password is incorrect.");
     }
 
-    //3. Update to new password
-    await prisma.user.update({
-        where: {
-            id: users[0].id
-        },
-        data: {
-            passwordHash: await hashPassword(changePasswordDto.newPassword),
-        }
-    });
+    await prisma.$transaction([
+            //3. Update to new password
+        prisma.user.update({
+            where: {
+                id: users[0].id
+            },
+            data: {
+                passwordHash: await hashPassword(changePasswordDto.newPassword),
+            }
+        }),
+
+        //4. Delete all exisiting sessions
+        prisma.session.deleteMany({
+            where: {
+                userId: users[0].id
+            }
+        })
+    ]);
 }
