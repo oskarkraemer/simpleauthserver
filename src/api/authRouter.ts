@@ -6,6 +6,7 @@ import { handleRegister } from '../services/register/registerUserService';
 import { validateRequest } from '../middlewares';
 import { handleLogin } from '../services/login/loginUserService';
 import { handleGetAuthState } from '../services/getAuthState/getAuthStateService';
+import { LoginUserDto } from '../dtos/request/loginUserDto';
 
 const authRouter = express.Router();
 
@@ -19,7 +20,7 @@ authRouter.post("/register", validateRequest(RegisterUserDto), async (req, res) 
   });
 });
 
-authRouter.post("/login", validateRequest(RegisterUserDto), async (req, res) => {
+authRouter.post("/login", validateRequest(LoginUserDto), async (req, res) => {
   const session = await handleLogin(req.body);
 
   res.json({

@@ -1,6 +1,7 @@
 import express from 'express';
 import authRouter from './authRouter';
 import MessageResponse from '../interfaces/responses/messageResponse';
+import userRouter from './userRouter';
 
 const apiRouter = express.Router();
 
@@ -11,5 +12,6 @@ apiRouter.get<{}, MessageResponse>('/health', (req, res) => {
 });
 
 apiRouter.use("/auth", authRouter);
+apiRouter.use("/user", userRouter);
 
 export default apiRouter;

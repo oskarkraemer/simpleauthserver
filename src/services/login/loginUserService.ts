@@ -1,6 +1,7 @@
 import { PrismaClient, Session, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { LoginUserDto } from "../../dtos/request/loginUserDto";
+import { comparePasswords } from "../../utils/hashing";
 
 const prisma = new PrismaClient();
 
@@ -45,7 +46,7 @@ export async function handleLogin(loginUserDto: LoginUserDto): Promise<Session> 
         } 
     });
 
-    const passwordMatched = await bcrypt.compare(loginUserDto.password, foundUser.passwordHash);
+    const passwordMatched = await comparePasswords(loginUserDto.password, foundUser.passwordHash);
     if(!passwordMatched) {
         throw new Error("Invald credentials");
     }

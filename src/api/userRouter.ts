@@ -1,21 +1,17 @@
 import express from 'express';
 
-import MessageResponse from '../interfaces/responses/messageResponse';
-import { RegisterUserDto } from '../dtos/request/registerUserDto';
 import { handleRegister } from '../services/register/registerUserService';
-import { validateRequest } from '../middlewares';
-import { handleLogin } from '../services/login/loginUserService';
-import { handleGetAuthState } from '../services/getAuthState/getAuthStateService';
+import { validateAuthenticatedRequest } from '../middlewares';
+import { ChangePasswordDto } from '../dtos/request/changePasswordDto';
+import { handleChangePassword } from '../services/changePassword/changePasswordService';
 
 const userRouter = express.Router();
 
-userRouter.post("/register", validateRequest(RegisterUserDto), async (req, res) => {
-  const newUser = await handleRegister(req.body);
-  newUser.passwordHash = "";
+userRouter.post("/change_password", validateAuthenticatedRequest(ChangePasswordDto), async (req, res) => {
+  await handleChangePassword(req.body, req.headers.authorization?.split("Bearer ")[1]!);
 
   res.json({
-    message: 'User registered successfully',
-    user: newUser
+    message: 'Password sucessfully changed.'
   });
 });
 
