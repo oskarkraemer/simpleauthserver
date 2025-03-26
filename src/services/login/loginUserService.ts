@@ -1,5 +1,4 @@
-import { PrismaClient, Session, User } from "@prisma/client";
-import bcrypt from "bcrypt";
+import { PrismaClient, Session } from "@prisma/client";
 import { LoginUserDto } from "../../dtos/request/loginUserDto";
 import { comparePasswords } from "../../utils/hashing";
 

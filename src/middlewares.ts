@@ -27,6 +27,9 @@ export const validateAuthenticatedRequest = (DtoClass: any) => {
       return next({ message: "Invalid session token." });
     }
 
+    //add session to request object for further use
+    req.session = authStateResponse;
+
     return validateRequest(DtoClass)(req, res, next);
   };
 };

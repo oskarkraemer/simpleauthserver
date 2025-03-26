@@ -11,6 +11,7 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
+    "typeRoots": ["./src/types/"]
   },
   "include": [
     "./*.js",

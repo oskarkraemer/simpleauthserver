@@ -1,6 +1,5 @@
 import express from 'express';
 
-import MessageResponse from '../interfaces/responses/messageResponse';
 import { RegisterUserDto } from '../dtos/request/registerUserDto';
 import { handleRegister } from '../services/register/registerUserService';
 import { validateRequest } from '../middlewares';

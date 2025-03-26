@@ -1,8 +1,9 @@
-import { PrismaClient, Session } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { SessionWithUser } from "../../types";
 
 const prisma = new PrismaClient();
 
-export async function handleGetAuthState(sessionId: string): Promise<Session | null> {
+export async function handleGetAuthState(sessionId: string): Promise<SessionWithUser | null> {
     const session = await prisma.session.findUnique({ 
         where: {
             id: sessionId
