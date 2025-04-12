@@ -9,8 +9,10 @@
     "build": "tsc",
     "start:dist": "node dist/src/index.js",
     "lint": "eslint --fix src test",
-    "test": "jest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:db:start": "docker-compose up -d postgres_test",
+    "test:db:stop": "docker-compose down",
+    "test": "npm run test:db:start && jest --runInBand && npm run test:db:stop"
   },
   "keywords": [],
   "author": "Oskar Krämer",
@@ -36,7 +38,7 @@
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",
     "@types/morgan": "^1.9.9",
-    "@types/node": "^22.13.11",
+    "@types/node": "^22.13.13",
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.27.0",
     "@typescript-eslint/parser": "^8.27.0",
@@ -48,7 +50,7 @@
     "nodemon": "^3.1.9",
     "prisma": "^6.5.0",
     "supertest": "^7.1.0",
-    "ts-jest": "^29.2.6",
+    "ts-jest": "^29.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2"
   }

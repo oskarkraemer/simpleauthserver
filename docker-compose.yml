@@ -12,5 +12,16 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_DB=${DB_DATABASE}
 
+  postgres_test:
+    image: postgres:latest
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_PASSWORD=testpassword
+      - POSTGRES_USER=testuser
+      - POSTGRES_DB=testdb
+    tmpfs:
+      - /var/lib/postgresql/data  # No persistence for test DB
+
 volumes:
   postgresdata:

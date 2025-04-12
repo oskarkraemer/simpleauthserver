@@ -4,7 +4,7 @@ import { comparePasswords } from "../../utils/hashing";
 
 const prisma = new PrismaClient();
 
-function generateNewSession(userId: number): Promise<Session> {
+function generateNewSession(userId: number): number {
     return prisma.$transaction(async (tx) => {
         const currentSessionCount = await prisma.session.count({
             where: {
